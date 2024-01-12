@@ -11,3 +11,23 @@ const ItemSchema = new Schema({
 })
 
 export const ItemModel = mongoose.models.Item || mongoose.model("Item", ItemSchema)
+
+const UserSchema = new Schema({
+    name: {
+        type: String,
+        required: true,
+        unique: false,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    password: {
+        type: String,
+        required: true,
+        unique: false,
+    },
+})
+
+export const UserModel = mongoose.models.User || mongoose.model("User", UserSchema)
