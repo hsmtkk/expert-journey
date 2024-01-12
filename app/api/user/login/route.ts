@@ -3,8 +3,6 @@ import { connectDB } from "@/app/utils/database"
 import { UserModel } from "@/app/utils/schemaModels"
 import { SignJWT } from "jose"
 
-const SECRET_KEY = "fcb72196-264f-4cd2-bf0b-a7411e833ef8"
-
 export async function POST(request: Request) {
     const reqBody = await request.json()
     try {
@@ -13,7 +11,8 @@ export async function POST(request: Request) {
         if (savedUser) {
             if (reqBody.password === savedUser.password) {
                 const payload = { email: reqBody.email }
-                const secretKey = new TextEncoder().encode(SECRET_KEY)
+                const key = process.env.JWT_SECRET_KEY
+                const secretKey = new TextEncoder().encode(key)
                 const token = await new SignJWT(payload).setProtectedHeader({ alg: "HS256" }).setExpirationTime("1d").sign(secretKey)
                 return NextResponse.json({ message: "ログイン成功", token })
             } else {
